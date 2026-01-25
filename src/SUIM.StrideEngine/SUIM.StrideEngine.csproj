@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <AssemblyName>SUIM.StrideEngine</AssemblyName>
+    <RootNamespace>SUIM.StrideEngine</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../SUIM.Core/SUIM.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Stride.Engine" Version="4.2.0.10" />
+    <PackageReference Include="Stride.Games" Version="4.2.0.10" />
+    <PackageReference Include="Stride.Graphics" Version="4.2.0.10" />
+  </ItemGroup>
+
+</Project>

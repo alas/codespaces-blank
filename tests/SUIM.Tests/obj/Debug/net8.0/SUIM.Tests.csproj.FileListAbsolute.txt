@@ -1,0 +1,5 @@
+/workspaces/codespaces-blank/tests/SUIM.Tests/obj/Debug/net8.0/SUIM.Tests.csproj.AssemblyReference.cache
+/workspaces/codespaces-blank/tests/SUIM.Tests/obj/Debug/net8.0/SUIM.Tests.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/codespaces-blank/tests/SUIM.Tests/obj/Debug/net8.0/SUIM.Tests.AssemblyInfoInputs.cache
+/workspaces/codespaces-blank/tests/SUIM.Tests/obj/Debug/net8.0/SUIM.Tests.AssemblyInfo.cs
+/workspaces/codespaces-blank/tests/SUIM.Tests/obj/Debug/net8.0/SUIM.Tests.csproj.CoreCompileInputs.cache
