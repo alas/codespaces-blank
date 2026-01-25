@@ -125,7 +125,3 @@ var result = parser.Parse(@"
 </vstack>
 ");
 ```
-
-## License
-
-This implementation is provided as part of the SUIM specification project.
