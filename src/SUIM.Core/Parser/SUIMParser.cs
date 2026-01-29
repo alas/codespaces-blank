@@ -71,8 +71,8 @@ public class SUIMParser
         else if (token.Type == TokenType.Text)
         {
             Advance();
-            // Create a text element (placeholder)
-            return new UIElement("text") { Attributes = { { "content", token.Value } } };
+            // Create a paragraph text element
+            return new PElement() { Text = token.Value };
         }
 
         return null;
@@ -121,7 +121,7 @@ public class SUIMParser
         
         // For now, return a container element
         // Real implementation would evaluate conditions
-        var container = new UIElement("fragment");
+        var container = new DivElement();
         
         while (!IsAtEnd() && Peek().Value != "else" && Peek().Value != "@else")
         {
@@ -139,7 +139,7 @@ public class SUIMParser
         
         // For now, return a container element
         // Real implementation would iterate
-        var container = new UIElement("fragment");
+        var container = new DivElement();
 
         while (!IsAtEnd())
         {
@@ -153,7 +153,7 @@ public class SUIMParser
 
     private UIElement CreateElementByTag(string tagName) => tagName.ToLower() switch
     {
-        "div" => new UIElement("div"),
+        "div" => new DivElement(),
         "vstack" or "vbox" => new VStackElement(),
         "hstack" or "hbox" => new HStackElement(),
         "grid" => new GridElement(),
@@ -173,7 +173,7 @@ public class SUIMParser
         "h6" => new H6Element(),
         "p" => new PElement(),
         "label" => new LabelElement(),
-        _ => new UIElement(tagName)
+        _ => new DivElement()
     };
 
     private Token Peek() => IsAtEnd() ? _tokens[^1] : _tokens[_current];
