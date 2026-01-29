@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SUIM.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+76b18edaab6fe4b0ed83d89753d7ad2b20214dec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+51841dfcdd71c7c298a34f5315fe14a6bd8a8a48")]
 [assembly: System.Reflection.AssemblyProductAttribute("SUIM.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SUIM.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
