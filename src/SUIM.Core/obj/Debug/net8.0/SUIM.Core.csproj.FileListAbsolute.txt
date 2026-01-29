@@ -1,4 +1,0 @@
-/workspaces/codespaces-blank/src/SUIM.Core/obj/Debug/net8.0/SUIM.Core.GeneratedMSBuildEditorConfig.editorconfig
-/workspaces/codespaces-blank/src/SUIM.Core/obj/Debug/net8.0/SUIM.Core.AssemblyInfoInputs.cache
-/workspaces/codespaces-blank/src/SUIM.Core/obj/Debug/net8.0/SUIM.Core.AssemblyInfo.cs
-/workspaces/codespaces-blank/src/SUIM.Core/obj/Debug/net8.0/SUIM.Core.csproj.CoreCompileInputs.cache
