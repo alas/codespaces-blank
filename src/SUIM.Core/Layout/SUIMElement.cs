@@ -32,6 +32,8 @@ namespace SUIM.Core.Layout
         // Height behavior for layout
         public HeightStrategy HeightStrategy { get; set; } = HeightStrategy.Auto;
 
+        public List<SUIMElement> Children { get; } = new();
+
         public SUIMElement()
         {
             Bounds = new RectangleF(0, 0, 0, 0);
