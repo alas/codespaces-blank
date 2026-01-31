@@ -22,8 +22,10 @@ using System.IO;
         public void Process_ShouldResolveSimpleIfCondition()
         {
             var xml = @"<vstack>
-                          @if (condition=""IsVisible"")
+                          @if (IsVisible)
+                        {
                             <button text=""Click Me"" />
+                        }
                         </vstack>";
             
             var model = new { IsVisible = true };
@@ -37,12 +39,18 @@ using System.IO;
         public void Process_ShouldResolveIfElseChain()
         {
             var xml = @"<panel>
-                          @if (condition=""Status == 'Active'"")
+                          @if (Status == 'Active')
+                          {
                              <label text=""Active"" />
-                          @else-if (condition=""Status == 'Pending'"")
+                          }
+                          else if (Status == ""Pending"")
+                          {
                              <label text=""Pending"" />
-                          @else
+                        }
+                          else
+                          {
                              <label text=""Inactive"" />
+                             }
                         </panel>";
 
             var model = new { Status = "Pending" };
@@ -59,10 +67,11 @@ using System.IO;
             // Create a mock component file
             var componentXml = @"<Mytag>
                                     <model> { myattribute: '' } </model>
-                                    @if (condition=""myattribute == 'doGrid'"")
+                                    @if (myattribute == 'doGrid'){
                                         <grid />
-                                    @else
+                                    }else{
                                         <div />
+                                        }
                                  </Mytag>";
             
             File.WriteAllText("UI/Components/Mytag.suim", componentXml);
@@ -83,8 +92,8 @@ using System.IO;
         public void Process_ShouldHandleNullChecksInConditions()
         {
             var xml = @"<vstack>
-                          @if (condition=""UserData == null"")
-                            <label text=""Please Login"" />
+                          @if (UserData == null){
+                            <label text=""Please Login"" />}
                         </vstack>";
 
             var result = _processor.Process(xml, new { UserData = (object)null });
@@ -95,8 +104,8 @@ using System.IO;
         public void Process_ShouldResolveForeachLoop()
         {
             var xml = @"<vstack>
-                          @foreach (items=""Names"", var=""name"")
-                            <label text=""@name"" />
+                          @foreach (var name in items){
+                            <label text=""@name"" />}
                         </vstack>";
 
             var model = new { Names = new List<string> { "Alice", "Bob" } };
@@ -114,12 +123,12 @@ using System.IO;
             // Note: This assumes your Evaluate logic handles the @switch tag 
             // or you've mapped it to @if chains internally.
             var xml = @"<panel>
-                          @if (condition=""UserRole == 'Admin'"")
-                             <button text=""Delete"" />
-                          @else-if (condition=""UserRole == 'Moderator'"")
-                             <button text=""Flag"" />
-                          @else
-                             <label text=""View Only"" />
+                          @if (UserRole == 'Admin'){
+                             <button text=""Delete"" />}
+                          else if (UserRole == 'Moderator'){
+                             <button text=""Flag"" />}
+                          else {
+                             <label text=""View Only"" />}
                         </panel>";
 
             var result = _processor.Process(xml, new { UserRole = "Admin" });
