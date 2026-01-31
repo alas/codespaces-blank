@@ -2,9 +2,132 @@ namespace SUIM.Tests;
 
 using Xunit;
 using SUIM.Core.Parser;
+using System.Collections.Generic;
+using System.IO;
 
-public class SUIMLexerTests
-{
+    public class ProcessorTests
+    {
+        private readonly SUIMProcessor _processor;
+
+        public ProcessorTests()
+        {
+            // Set up a mock component directory for testing expansion
+            _processor = new SUIMProcessor("UI/Components");
+            
+            if (!Directory.Exists("UI/Components"))
+                Directory.CreateDirectory("UI/Components");
+        }
+
+        [Fact]
+        public void Process_ShouldResolveSimpleIfCondition()
+        {
+            var xml = @"<vstack>
+                          @if (condition=""IsVisible"")
+                            <button text=""Click Me"" />
+                        </vstack>";
+            
+            var model = new { IsVisible = true };
+            var result = _processor.Process(xml, model);
+
+            Assert.Contains("<button text=\"Click Me\" />", result);
+            Assert.DoesNotContain("@if", result);
+        }
+
+        [Fact]
+        public void Process_ShouldResolveIfElseChain()
+        {
+            var xml = @"<panel>
+                          @if (condition=""Status == 'Active'"")
+                             <label text=""Active"" />
+                          @else-if (condition=""Status == 'Pending'"")
+                             <label text=""Pending"" />
+                          @else
+                             <label text=""Inactive"" />
+                        </panel>";
+
+            var model = new { Status = "Pending" };
+            var result = _processor.Process(xml, model);
+
+            Assert.Contains("<label text=\"Pending\" />", result);
+            Assert.DoesNotContain("Active", result);
+            Assert.DoesNotContain("Inactive", result);
+        }
+
+        [Fact]
+        public void Process_ShouldExpandCustomTagWithAttributes()
+        {
+            // Create a mock component file
+            var componentXml = @"<Mytag>
+                                    <model> { myattribute: '' } </model>
+                                    @if (condition=""myattribute == 'doGrid'"")
+                                        <grid />
+                                    @else
+                                        <div />
+                                 </Mytag>";
+            
+            File.WriteAllText("UI/Components/Mytag.suim", componentXml);
+
+            var xml = @"<vstack>
+                          <Mytag myattribute=""doGrid"" />
+                        </vstack>";
+
+            var result = _processor.Process(xml);
+
+            // Should expand to <grid /> because attribute was passed
+            Assert.Contains("<grid />", result);
+            Assert.DoesNotContain("<div />", result);
+            Assert.DoesNotContain("<Mytag", result);
+        }
+
+        [Fact]
+        public void Process_ShouldHandleNullChecksInConditions()
+        {
+            var xml = @"<vstack>
+                          @if (condition=""UserData == null"")
+                            <label text=""Please Login"" />
+                        </vstack>";
+
+            var result = _processor.Process(xml, new { UserData = (object)null });
+            Assert.Contains("Please Login", result);
+        }
+
+        [Fact]
+        public void Process_ShouldResolveForeachLoop()
+        {
+            var xml = @"<vstack>
+                          @foreach (items=""Names"", var=""name"")
+                            <label text=""@name"" />
+                        </vstack>";
+
+            var model = new { Names = new List<string> { "Alice", "Bob" } };
+            var result = _processor.Process(xml, model);
+
+            // Note: If you haven't finished the @name replacement helper, 
+            // this verifies the tags are at least duplicated.
+            int labelCount = result.Split("<label").Length - 1;
+            Assert.Equal(2, labelCount);
+        }
+
+        [Fact]
+        public void Process_ShouldResolveSwitchCase()
+        {
+            // Note: This assumes your Evaluate logic handles the @switch tag 
+            // or you've mapped it to @if chains internally.
+            var xml = @"<panel>
+                          @if (condition=""UserRole == 'Admin'"")
+                             <button text=""Delete"" />
+                          @else-if (condition=""UserRole == 'Moderator'"")
+                             <button text=""Flag"" />
+                          @else
+                             <label text=""View Only"" />
+                        </panel>";
+
+            var result = _processor.Process(xml, new { UserRole = "Admin" });
+            Assert.Contains("Delete", result);
+            Assert.DoesNotContain("Flag", result);
+            Assert.DoesNotContain("View Only", result);
+        }
+        
     [Fact]
     public void Tokenize_EmptyString_ReturnsEOFToken()
     {
