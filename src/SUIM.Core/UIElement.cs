@@ -45,6 +45,14 @@ public abstract class UIElement
     /// <summary>Event handlers by event name.</summary>
     public Dictionary<string, List<Action<UIElement>>> EventHandlers { get; set; } = new();
 
+    public List<PropertyBinding> Bindings { get; } = new();
+    public List<SUIMElement> Children { get; } = new();
+    
+    public void Refresh() {
+        foreach(var b in Bindings) b.Apply();
+        foreach(var child in Children) child.Refresh();
+    }
+
     protected UIElement(string tagName)
     {
         TagName = tagName;
